@@ -3,6 +3,9 @@
 # Healthcare Dashboard - Full Stack Startup Script
 # Starts both backend and frontend services
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+BACKEND_DIR="$SCRIPT_DIR/../backend"
+
 echo "🏥 Healthcare Dashboard - Starting Services..."
 echo ""
 
@@ -18,7 +21,7 @@ trap cleanup SIGINT SIGTERM
 
 # Start Backend Server
 echo "📡 Starting Backend Server..."
-cd backend
+cd "$BACKEND_DIR"
 npm install > /dev/null 2>&1
 npm start &
 BACKEND_PID=$!
@@ -29,7 +32,7 @@ sleep 2
 # Start Frontend Server
 echo ""
 echo "🎨 Starting Frontend Server..."
-cd ../
+cd "$SCRIPT_DIR"
 npm install > /dev/null 2>&1
 npm run dev &
 FRONTEND_PID=$!

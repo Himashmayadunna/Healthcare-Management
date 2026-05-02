@@ -4,6 +4,6 @@
  * This proxies all /api/* requests to the Express backend
  */
 
-const app = require("../backend/server");
+const app = require("../../backend/server");
 
 module.exports = app;

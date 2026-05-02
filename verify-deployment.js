@@ -28,7 +28,11 @@ if (fs.existsSync(".env.local")) {
 
 // Check 3: Backend files
 console.log("✓ Checking backend structure...");
-const backendFiles = ["backend/server.js", "backend/package.json", "backend/db/db.js"];
+const backendFiles = [
+  path.join(__dirname, "..", "backend", "server.js"),
+  path.join(__dirname, "..", "backend", "package.json"),
+  path.join(__dirname, "..", "backend", "db", "db.js"),
+];
 const backendOK = backendFiles.every((file) => fs.existsSync(file));
 if (backendOK) {
   console.log("  ✅ Backend structure OK\n");
