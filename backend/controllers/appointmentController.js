@@ -1,5 +1,25 @@
 const connectDB = require("../db/db");
 
+exports.getAppointments = async (req, res) => {
+  let conn;
+  try {
+    conn = await connectDB();
+    const result = await conn.execute(`SELECT * FROM appointments`);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error fetching appointments:", err.message);
+    res.status(500).json({ error: err.message });
+  } finally {
+    if (conn) {
+      try {
+        await conn.close();
+      } catch (err) {
+        console.error("Error closing connection:", err.message);
+      }
+    }
+  }
+};
+
 exports.createAppointment = async (req, res) => {
   let conn;
   try {

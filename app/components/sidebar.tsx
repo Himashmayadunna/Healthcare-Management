@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Users,
@@ -12,17 +15,19 @@ import {
 
 const navItems = [
   { label: "Dashboard", href: "/homepage", icon: LayoutDashboard },
-  { label: "Patients", href: "#patients", icon: Users },
-  { label: "Appointments", href: "#appointments", icon: Calendar },
-  { label: "Prescriptions", href: "#prescriptions", icon: ClipboardList },
-  { label: "Inventory", href: "#inventory", icon: Package, badge: true },
-  { label: "Suppliers", href: "#suppliers", icon: Building2 },
-  { label: "Settings", href: "#settings", icon: Settings },
+  { label: "Patients", href: "/patients", icon: Users },
+  { label: "Appointments", href: "/appointments", icon: Calendar },
+  { label: "Prescriptions", href: "/prescriptions", icon: ClipboardList },
+  { label: "Inventory", href: "/inventory", icon: Package, badge: true },
+  { label: "Suppliers", href: "/suppliers", icon: Building2 },
+  { label: "Settings", href: "/settings", icon: Settings },
 ];
 
 export default function Sidebar() {
+  const pathname = usePathname();
+
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-cyan-50 border-r border-cyan-100 p-6 flex flex-col shadow-sm">
+    <aside className="fixed left-0 top-0 z-30 h-screen w-64 bg-cyan-50 border-r border-cyan-100 p-6 flex flex-col shadow-sm pointer-events-auto">
       <Link href="/homepage" className="mb-8 flex items-center gap-2">
         <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-600 text-white font-bold">Ω</span>
         <div>
@@ -38,7 +43,7 @@ export default function Sidebar() {
               key={item.label}
               href={item.href}
               className={`relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition ${
-                item.label === "Dashboard" 
+                pathname === item.href 
                   ? "bg-cyan-100 font-medium text-teal-700" 
                   : "text-gray-600 hover:bg-cyan-100"
               }`}

@@ -1,6 +1,26 @@
 const connectDB = require("../db/db");
 const oracledb = require("oracledb");
 
+exports.getPrescriptions = async (req, res) => {
+  let conn;
+  try {
+    conn = await connectDB();
+    const result = await conn.execute(`SELECT * FROM prescriptions`);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error fetching prescriptions:", err.message);
+    res.status(500).json({ error: err.message });
+  } finally {
+    if (conn) {
+      try {
+        await conn.close();
+      } catch (err) {
+        console.error("Error closing connection:", err.message);
+      }
+    }
+  }
+};
+
 exports.createPrescription = async (req, res) => {
   let conn;
   try {

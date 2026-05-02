@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "framework": "nextjs",
+  "functions": {
+    "backend/server.js": {
+      "memory": 3008,
+      "maxDuration": 30
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_API_BASE_URL": "@next_public_api_base_url",
+    "DB_USER": "@db_user",
+    "DB_PASSWORD": "@db_password",
+    "DB_CONNECT": "@db_connect",
+    "CORS_ORIGIN": "@cors_origin"
+  },
+  "regions": ["iad1"]
+}

@@ -9,7 +9,19 @@ const connectDB = require("./db/db");
 
 const app = express();
 
-app.use(cors());
+// CORS configuration for Vercel deployment
+const corsOptions = {
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:5000",
+    /https:\/\/.*\.vercel\.app$/,
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use("/api/patients", patientRoutes);
@@ -27,7 +39,14 @@ app.get("/api/health", async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
-  console.log(`Database connection string: ${process.env.DB_CONNECT}`);
-});
+// For local development
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Database connection string: ${process.env.DB_CONNECT}`);
+  });
+}
+
+// Export for Vercel serverless
+module.exports = app;
