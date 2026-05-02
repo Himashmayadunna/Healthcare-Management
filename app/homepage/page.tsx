@@ -1,5 +1,17 @@
 import Footer from "../components/Footer";
 import Sidebar from "../components/sidebar";
+import {
+  Search,
+  Bell,
+  Users,
+  Calendar,
+  Pill,
+  AlertCircle,
+  TrendingUp,
+  TrendingDown,
+  AlertTriangle,
+  ChevronDown,
+} from "lucide-react";
 
 type Patient = {
 	id: number | string;
@@ -86,115 +98,128 @@ export default async function HomePage() {
 	const data = await getDashboardData();
 
 	return (
-		<div className="flex min-h-screen flex-col">
-			<main className="relative flex-1 overflow-hidden bg-[radial-gradient(circle_at_top_left,#dff8ef_0%,#f5fbf9_40%,#eff4fb_100%)]">
-				<div className="pointer-events-none absolute -top-28 -right-20 h-72 w-72 rounded-full bg-emerald-200/40 blur-3xl" />
-				<div className="pointer-events-none absolute -bottom-24 -left-17.5 h-72 w-72 rounded-full bg-sky-200/40 blur-3xl" />
+		<div className="flex min-h-screen flex-col bg-gray-50">
+			<Sidebar />
+			
+			{/* Top Header */}
+			<header className="fixed left-64 right-0 top-0 z-10 border-b border-gray-200 bg-white">
+				<div className="flex items-center justify-between px-8 py-4">
+					<div className="flex-1">
+						<div className="relative max-w-md">
+							<input
+								type="text"
+								placeholder="Search patients, medicines, appointments..."
+								className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+							/>
+						<Search className="absolute right-3 top-2.5 w-4 h-4 text-gray-400" />
+						</div>
+					</div>
+					
+					<div className="ml-8 flex items-center gap-6">
+						<button className="relative text-gray-600 hover:text-teal-600">
+							<Bell className="w-5 h-5" />
+						</button>
+						<div className="flex items-center gap-3">
+							<span className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-600 text-sm font-semibold text-white">DR</span>
+							<div className="text-sm">
+								<p className="font-semibold text-gray-900">Dr. Rivera</p>
+								<p className="text-xs text-gray-500">Administrator</p>
+							</div>
+							<button className="text-gray-400 hover:text-gray-600 ml-2">
+								<ChevronDown className="w-4 h-4" />
+							</button>
+						</div>
+					</div>
+				</div>
+			</header>
+			
+			<main className="relative flex-1 overflow-y-auto pt-20 pl-64">
+				<div className="space-y-6 px-6 py-8">
+					{/* Welcome Section */}
+					<div>
+						<h1 className="text-4xl font-bold text-gray-900">Welcome back, Dr. Rivera</h1>
+						<p className="mt-2 text-gray-600">Here's what's happening across your practice today.</p>
+					</div>
 
-				<div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[250px_1fr] lg:px-8">
-					<Sidebar />
-
-					<section className="space-y-6">
-						<div>
-							<h1 className="text-3xl font-semibold tracking-tight text-slate-900">Hospital Dashboard</h1>
-							<p className="mt-1 text-sm text-slate-600">
-								Unified home view for healthcare operations and inventory management.
-							</p>
+					{/* KPI Cards Grid */}
+					<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+						{/* Total Patients */}
+						<div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition">
+							<div className="flex items-start justify-between">
+								<div>
+									<p className="text-xs font-semibold uppercase tracking-wider text-gray-500">Total Patients</p>
+									<p className="mt-3 text-3xl font-bold text-gray-900">{data.patientCount.toLocaleString() || "2,847"}</p>
+								<p className="mt-3 text-sm text-teal-600 flex items-center gap-1"><TrendingUp className="w-4 h-4" /> 8.2% <span className="text-gray-500 ml-1">vs last week</span></p>
+							</div>
+							<Users className="w-8 h-8 text-teal-500" />
+							</div>
 						</div>
 
-						<div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-							<article className="rounded-2xl border border-white/80 bg-white/90 p-5 shadow-sm">
-								<p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Patients</p>
-								<p className="mt-2 text-3xl font-semibold text-slate-900">{data.patientCount}</p>
-								<p className="mt-2 text-sm text-slate-500">Live count from backend</p>
-							</article>
-
-							<article className="rounded-2xl border border-white/80 bg-white/90 p-5 shadow-sm" id="appointments">
-								<p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Appointments</p>
-								<p className="mt-2 text-3xl font-semibold text-slate-900">{data.appointmentCount}</p>
-								<p className="mt-2 text-sm text-slate-500">Add GET route to display live total</p>
-							</article>
-
-							<article className="rounded-2xl border border-white/80 bg-white/90 p-5 shadow-sm">
-								<p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Prescriptions</p>
-								<p className="mt-2 text-3xl font-semibold text-slate-900">{data.prescriptionCount}</p>
-								<p className="mt-2 text-sm text-slate-500">Pending backend summary endpoint</p>
-							</article>
-
-							<article className="rounded-2xl border border-white/80 bg-white/90 p-5 shadow-sm" id="inventory">
-								<p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Inventory Alerts</p>
-								<p className="mt-2 text-3xl font-semibold text-slate-900">7</p>
-								<p className="mt-2 text-sm text-slate-500">Critical items below threshold</p>
-							</article>
+						{/* Appointments Today */}
+						<div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition">
+							<div className="flex items-start justify-between">
+								<div>
+									<p className="text-xs font-semibold uppercase tracking-wider text-gray-500">Appointments Today</p>
+									<p className="mt-3 text-3xl font-bold text-gray-900">24</p>
+								<p className="mt-3 text-sm text-teal-600 flex items-center gap-1"><TrendingUp className="w-4 h-4" /> 12.5% <span className="text-gray-500 ml-1">vs last week</span></p>
+							</div>
+							<Calendar className="w-8 h-8 text-teal-500" />
+							</div>
 						</div>
 
-						<div className="grid grid-cols-1 gap-4 lg:grid-cols-2" id="patients">
-							<article className="rounded-3xl border border-white/70 bg-white/90 p-5 shadow-sm">
-								<div className="flex items-center justify-between">
-									<h2 className="text-lg font-semibold text-slate-900">Recent Patients</h2>
-									<span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-										Today
-									</span>
-								</div>
-
-								<div className="mt-4 overflow-x-auto">
-									<table className="w-full min-w-110 text-left text-sm">
-										<thead>
-											<tr className="border-b border-slate-200 text-slate-500">
-												<th className="pb-2 font-medium">Name</th>
-												<th className="pb-2 font-medium">Age</th>
-												<th className="pb-2 font-medium">Contact</th>
-											</tr>
-										</thead>
-										<tbody>
-											{data.patients.length > 0 ? (
-												data.patients.slice(0, 5).map((patient) => (
-													<tr key={`${patient.id}-${patient.name}`} className="border-b border-slate-100 text-slate-700">
-														<td className="py-3">{patient.name}</td>
-														<td className="py-3">{patient.age}</td>
-														<td className="py-3">{patient.contact}</td>
-													</tr>
-												))
-											) : (
-												<tr>
-													<td className="py-4 text-slate-500" colSpan={3}>
-														No patient records found yet.
-													</td>
-												</tr>
-											)}
-										</tbody>
-									</table>
-								</div>
-							</article>
-
-							<article className="rounded-3xl border border-white/70 bg-white/90 p-5 shadow-sm">
-								<h2 className="text-lg font-semibold text-slate-900">Inventory Snapshot</h2>
-								<ul className="mt-4 space-y-3 text-sm text-slate-700">
-									<li className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2">
-										<span>Gloves</span>
-										<span className="font-semibold text-amber-600">Low</span>
-									</li>
-									<li className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2">
-										<span>Syringes</span>
-										<span className="font-semibold text-emerald-700">Good</span>
-									</li>
-									<li className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2">
-										<span>Antibiotics</span>
-										<span className="font-semibold text-rose-600">Critical</span>
-									</li>
-									<li className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2">
-										<span>IV Fluids</span>
-										<span className="font-semibold text-emerald-700">Good</span>
-									</li>
-								</ul>
-							</article>
+						{/* Available Medicines */}
+						<div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition">
+							<div className="flex items-start justify-between">
+								<div>
+									<p className="text-xs font-semibold uppercase tracking-wider text-gray-500">Available Medicines</p>
+									<p className="mt-3 text-3xl font-bold text-gray-900">1,326</p>
+								<p className="mt-3 text-sm text-red-600 flex items-center gap-1"><TrendingDown className="w-4 h-4" /> 2.1% <span className="text-gray-500 ml-1">vs last month</span></p>
+							</div>
+							<Pill className="w-8 h-8 text-teal-500" />
+							</div>
 						</div>
 
-						<div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
-							<p className="text-xs font-semibold uppercase tracking-[0.12em] text-emerald-700">System Health</p>
-							<p className="mt-2 text-sm text-emerald-900">{data.health}</p>
+						{/* Low Stock Alerts */}
+						<div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition">
+							<div className="flex items-start justify-between">
+								<div>
+									<p className="text-xs font-semibold uppercase tracking-wider text-gray-500">Low Stock Alerts</p>
+									<p className="mt-3 text-3xl font-bold text-red-600">7</p>
+								<p className="mt-3 text-sm text-teal-600 flex items-center gap-1"><TrendingUp className="w-4 h-4" /> 3% <span className="text-gray-500 ml-1">new this week</span></p>
+							</div>
+							<AlertCircle className="w-8 h-8 text-red-500" />
+							</div>
 						</div>
-					</section>
+					</div>
+
+					{/* Alert Box */}
+					<div className="rounded-lg border border-red-200 bg-red-50 p-6 flex items-start gap-4">
+						<div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-500 text-white shrink-0">
+							<AlertTriangle className="w-5 h-5" />
+						</div>
+						<div className="flex-1 min-w-0">
+							<h3 className="font-semibold text-red-700">7 medicines need restocking</h3>
+							<p className="mt-1 text-sm text-red-600">Insulin Glargine, Salbutamol Inhaler, Atorvastatin and 4 more are below their minimum threshold.</p>
+						</div>
+						<button className="whitespace-nowrap text-sm font-semibold text-red-600 hover:text-red-700 shrink-0">View Inventory →</button>
+					</div>
+
+					{/* Patient Visits Chart Section */}
+					<div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+						<div className="flex items-center justify-between">
+							<div>
+								<h2 className="text-lg font-semibold text-gray-900">Patient Visits</h2>
+								<p className="text-sm text-gray-500">Last 7 days overview</p>
+							</div>
+							<div className="text-xs text-gray-500 space-x-4">
+								<span className="inline-flex items-center gap-1"><span className="inline-block h-2 w-2 rounded-full bg-teal-500"></span> Visits</span>
+								<span className="inline-flex items-center gap-1"><span className="inline-block h-2 w-2 rounded-full bg-cyan-500"></span> New</span>
+							</div>
+						</div>
+						<div className="mt-6 h-64 rounded-lg bg-linear-to-b from-gray-50 to-white p-4">
+							<p className="text-center text-sm text-gray-400 mt-20">Chart placeholder - Ready for chart library integration</p>
+						</div>
+					</div>
 				</div>
 			</main>
 
