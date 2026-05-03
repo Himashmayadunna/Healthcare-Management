@@ -9,11 +9,7 @@
     }
   ],
   "env": {
-    "NEXT_PUBLIC_API_BASE_URL": "@next_public_api_base_url",
-    "DB_USER": "@db_user",
-    "DB_PASSWORD": "@db_password",
-    "DB_CONNECT": "@db_connect",
-    "CORS_ORIGIN": "@cors_origin"
+    "NEXT_PUBLIC_API_BASE_URL": "https://backfield-thaw-backwash.ngrok-free.dev/api"
   },
   "regions": ["iad1"]
 }
