@@ -3,7 +3,7 @@
   "buildCommand": "npm run build",
   "framework": "nextjs",
   "env": {
-    "NEXT_PUBLIC_API_BASE_URL": "https://backfield-thaw-backwash.ngrok-free.dev/api"
+    "NEXT_PUBLIC_API_URL": "https://backfield-thaw-backwash.ngrok-free.dev/api"
   },
   "regions": ["iad1"]
 }
