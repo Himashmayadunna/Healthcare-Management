@@ -2,12 +2,6 @@
   "version": 2,
   "buildCommand": "npm run build",
   "framework": "nextjs",
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
-  ],
   "env": {
     "NEXT_PUBLIC_API_BASE_URL": "https://backfield-thaw-backwash.ngrok-free.dev/api"
   },
