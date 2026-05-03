@@ -78,20 +78,31 @@ function normalizePatients(rows: unknown): Patient[] {
 }
 
 async function getDashboardData(): Promise<DashboardData> {
-	const [patientsResponse, healthResponse] = await Promise.all([
-		fetchJson<unknown[]>("/patients"),
-		fetchJson<{ status?: string; error?: string }>("/health"),
-	]);
+	try {
+		const [patientsResponse, healthResponse] = await Promise.all([
+			fetchJson<unknown[]>("/patients"),
+			fetchJson<{ status?: string; error?: string }>("/health"),
+		]);
 
-	const patients = normalizePatients(patientsResponse);
+		const patients = normalizePatients(patientsResponse);
 
-	return {
-		health: healthResponse?.status ?? healthResponse?.error ?? "Backend unavailable",
-		patientCount: patients.length,
-		appointmentCount: 0,
-		prescriptionCount: 0,
-		patients,
-	};
+		return {
+			health: healthResponse?.status ?? healthResponse?.error ?? "Backend unavailable",
+			patientCount: patients.length,
+			appointmentCount: 0,
+			prescriptionCount: 0,
+			patients,
+		};
+	} catch (error) {
+		console.error("Failed to fetch dashboard data:", error);
+		return {
+			health: "Backend unreachable",
+			patientCount: 0,
+			appointmentCount: 0,
+			prescriptionCount: 0,
+			patients: [],
+		};
+	}
 }
 
 export default async function HomePage() {
