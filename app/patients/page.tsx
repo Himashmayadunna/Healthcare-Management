@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import {
 	AlertCircle,
 	Calendar,
-	ChevronDown,
 	Filter,
+	ChevronDown,
 	MoreHorizontal,
 	Plus,
 	Search,
@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import Sidebar from "../components/sidebar";
 import Footer from "../components/Footer";
+import DoctorMenu from "../components/DoctorMenu";
 import { patientAPI } from "../services/api";
 
 type Patient = {
@@ -208,16 +209,7 @@ export default function PatientsPage() {
 							<AlertCircle className="h-5 w-5" />
 							<span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500" />
 						</button>
-						<div className="flex items-center gap-3">
-							<span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal-500 text-sm font-semibold text-white shadow-sm">
-								DR
-							</span>
-							<div>
-								<p className="text-sm font-semibold text-slate-900">Dr. Rivera</p>
-								<p className="text-xs text-slate-500">Administrator</p>
-							</div>
-							<ChevronDown className="h-4 w-4 text-slate-400" />
-						</div>
+						<DoctorMenu />
 					</div>
 				</div>
 			</header>
